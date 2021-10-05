@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Geogroup{% endblock %}
+
+{% block body %}
+    <h1>Geogroup</h1>
+    <form action="/geogroup/joinaction" method="post">
+        <div class="row">
+            <div class="col-2">
+                Name:
+            </div>
+            <div class="col-3">
+                <input name="name"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                Password:
+            </div>
+            <div class="col-3">
+                <input name="password" type="password"/>
+            </div>
+        </div>
+        <input type="submit" value="{% trans %}Join Group{% endtrans %}">
+    </form>
+{% endblock %}

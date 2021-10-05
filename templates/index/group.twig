@@ -1,0 +1,155 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Group{% endblock %}
+
+{% block body %}
+
+    {% for location in locations %}
+        <img style="display: none" src="{{ location.getImgUrl() | imagine_filter('makegroupsmall') }}" class="uploadedimage">
+    {% endfor %}
+
+    <h1>{{ group.name }}</h1>
+    <h2>{{ group.text }}</h2>
+
+    <br><br>
+
+    <div class="row" style="margin-bottom: 50px">
+        <div class="col-12 text-center">
+            <button onclick="$('.map-wrapper').slideToggle()" class="btn btn-default text-center">{% trans %}Show Map{% endtrans %}</button>
+        </div>
+    </div>
+
+    <div class="map-wrapper">
+        <div id="map" style="width: 100%; height: 700px; background: grey"></div>
+    </div>
+    <script type="text/javascript">
+        var decoded;
+        var markersa = [];
+        {% for location in locationsjsons %}
+        decoded = $("<div/>").html("{{ location }}").text();
+        markersa.push($.parseJSON(decoded))
+        {% endfor %}
+    </script>
+    <script type="text/javascript" charset="UTF-8" src="/js/here.js"></script>
+
+    <div class="row" style="margin-bottom: 50px">
+        <div class="col-12 text-center">
+            <button onclick="$('.groupedit').slideToggle()" class="btn btn-default text-center">{% trans %}Show Edit{% endtrans %}</button>
+        </div>
+    </div>
+
+    <div class="groupedit" style="display: none">
+        <form action="/geogroup/s" method="post" class="form" id="myForm" enctype="multipart/form-data">
+            <div>
+                <div class="hidden">
+                    Name: <input id="name" name="id" value="{{ group.id }}"/>
+                </div>
+                <div>
+                    Name: <input id="name" name="name" value="{{ group.name }}"/>
+                </div>
+                <div>
+                    Text: <input id="text" name="text" value="{{ group.text }}"/>
+                </div>
+                <div>
+                    <br>
+                </div>
+                <div style="text-align: center">
+                    <input type="submit" value="Update (not implemented yet)">
+                </div>
+            </div>
+        </form>
+
+        <div>
+            <a href="/user/setgroup/{{ group.id }}">{% trans %}Set as active Group{% endtrans %}</a>
+        </div>
+
+        <b>{% trans %}Options{% endtrans %}:</b>
+        {% for option in group.getOptions() %}
+            <div style="background-color: {{ option.color }}; text-shadow: -1px 0 white, 0 1px white, 1px 0 white, 0 -1px white">
+                <b>Name: {{ option.name }}   Text: {{ option.text }}   Color: {{ option.color }}</b>
+            </div>
+        {% endfor %}
+
+        <br><br><br>
+
+        <form action="/geogroup/addoptions" method="post" id="myForm2">
+            <div class="hidden">
+                Name: <input id="name" name="id" value="{{ group.id }}"/>
+            </div>
+            {% for i in 0..10 %}
+                <div style="width: 100%">
+                    Name: <input name="name{{ i }}" />
+                    Text: <input name="text{{ i }}" />
+                    Color: <input type="color" name="color{{ i }}" />
+                </div>
+            {% endfor %}
+            <input type="submit" value="Add Options">
+        </form>
+
+        <br><br><br>
+
+        <b>{% trans %}User{% endtrans %}:</b>
+        {% for user in group.users %}
+            <div>
+                <b>Id: {{ user.id }}   Name: {{ user.name }}</b>
+                <a href="/geogroup/removeuser/{{ group.id }}/{{ user.id }}">{% trans %}Remove{%  endtrans %}</a>
+                </br>
+            </div>
+        {% endfor %}
+
+        <br>
+
+        <form action="/geogroup/adduser" method="post" id="myForm2">
+            <div class="hidden">
+                ID: <input id="groupid" name="groupid" value="{{ group.id }}"/>
+            </div>
+            Name: <input name="name" />
+            <input type="submit" value="{% trans %}Add User{% endtrans %}">
+        </form>
+
+        <br><br><br>
+
+        <b>{% trans %}Admins{% endtrans %}:</b>
+        {% for admin in group.admins %}
+            <div>
+                <b>Id: {{ admin.id }}   Name: {{ admin.name }}</b>
+                <a href="/geogroup/removeadmin/{{ group.id }}/{{ admin.id }}">{% trans %}Remove{%  endtrans %}</a>
+                </br>
+            </div>
+        {% endfor %}
+
+        <br>
+
+        <form action="/geogroup/addadmin" method="post" id="myForm2">
+            <div class="hidden">
+                ID: <input id="groupid" name="groupid" value="{{ group.id }}"/>
+            </div>
+            Name: <input name="name" />
+            <input type="submit" value="{% trans %}Add Admin{% endtrans %}">
+        </form>
+
+        <br><br><br>
+
+    </div>
+
+    <b>{% trans %}Locations{% endtrans %}:</b>
+    {% for location in group.getLocations() %}
+        <div id="l{{ location.id }}">
+            <b>
+                {% trans %}Longitude{% endtrans %}: {{ location.ltd }}
+                {% trans %}Latitude{% endtrans %}: {{ location.lgt }}
+            </b>
+            <div class="options">
+                {% for option in location.getGeooptions() %}
+                    <div>
+                        {{ option.name }}: {{ option.text }}
+                    </div>
+                {% endfor %}
+            </div>
+            <img src="{{ location.getImgUrl() | imagine_filter('makesmall') }}" class="uploadedimage">
+            <img src="{{ location.getImgUrlSolved() | imagine_filter('makesmall') }}" class="uploadedimage">
+            </br>
+        </div>
+    {% endfor %}
+
+{% endblock %}

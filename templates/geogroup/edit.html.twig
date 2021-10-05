@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Geogroup{% endblock %}
+
+{% block body %}
+    <h1>Edit Geogroup</h1>
+
+    {{ include('geogroup/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('geogroup_index') }}">back to list</a>
+
+    {{ include('geogroup/_delete_form.html.twig') }}
+{% endblock %}

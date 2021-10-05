@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Geogroup{% endblock %}
+
+{% block body %}
+
+    {% if search is empty %}
+
+        <div class="row" style="margin-bottom: 50px">
+            <div class="col-12 text-center">
+                <button onclick="$('#myForm').slideToggle()" class="btn btn-default text-center">{% trans %}Create Group{% endtrans %}</button>
+            </div>
+        </div>
+
+        <form action="/geogroup/addgroup" style="display: none" method="post" class="form" id="myForm" enctype="multipart/form-data">
+            <div>
+                <div>
+                    Name: <input id="name" name="name"/>
+                </div>
+                <div>
+                    Text: <input id="text" name="text"/>
+                </div>
+                <div>
+                    Password: <input type="password" id="password" name="password"/><br>
+                    Groups with Password will not be listed
+                </div>
+                <div>
+                    <input type="file" accept="image/*" capture="camera" name="image"><br>
+                    (will be fitted into 150x150 pixels)
+                </div>
+                <div>
+                    <br>
+                </div>
+                <div style="text-align: center">
+                    <input type="submit" value="Create">
+                </div>
+            </div>
+        </form>
+    {% else %}
+        <h3>{% trans %}searching for{% endtrans %}: {{ search }}</h3>
+    {% endif %}
+
+
+    {% for location in locations %}
+        <img style="display: none" src="{{ location.getImgUrl() | imagine_filter('makegroupsmall') }}" class="uploadedimage">
+    {% endfor %}
+
+    <div class="row" style="margin-bottom: 50px">
+        <div class="col-12 text-center">
+            <button onclick="$('.map-wrapper').slideToggle()" class="btn btn-default text-center">{% trans %}Show Map{% endtrans %}</button>
+        </div>
+    </div>
+
+    <div class="map-wrapper">
+        <div id="map" style="width: 100%; height: 700px; background: grey"></div>
+    </div>
+
+    <script type="text/javascript">
+        var decoded;
+        var markersa = [];
+        {% for location in locationsjsons %}
+        decoded = $("<div/>").html("{{ location }}").text();
+        markersa.push($.parseJSON(decoded))
+        {% endfor %}
+
+        var mymap = L.map('map').setView([51.505, -0.09], 13);
+
+        L.tileLayer('https://api.tiles.mapbox.com/v4/{id}/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoidG5wa2xvbiIsImEiOiJjam5lcDByeGYwajc2M3JvNDV4bXJwcTNwIn0.bU5975wYSBvFCqGLxrbL5w', {
+            attribution: 'Map data &copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a> contributors, <a href="https://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="https://www.mapbox.com/">Mapbox</a>',
+            maxZoom: 18,
+            id: 'mapbox.streets',
+            accessToken: 'your.mapbox.access.token'
+        }).addTo(mymap);
+
+        addMarkersToMapOsm(mymap);
+
+    </script>
+
+    <div class="row">
+    {% for group in groups %}
+        <div class="col-12 col-sm-6 col-md-4 col-lg-2 col-xl-2 group-grid align-items-end">
+            <div class="row">
+                <div class="col-sm text-center">
+                    <img src="{{ group.getImgUrl() | imagine_filter('makegroupsmall150bg2') }}" class="uploadedimage">
+                    <img style="display: none" src="{{ group.getImgUrl() | imagine_filter('makegroupsmall') }}" class="uploadedimage">
+                </div>
+            </div>
+            <div class="row group-name">
+                <div class="col-sm" style="word-wrap: break-word;">
+                    <strong>{{ group.name }}</strong><br>
+                    {{ group.text }}
+                </div>
+            </div>
+            <div class="row group-count">
+                <div class="col-sm">
+                    Users: {{ group.usercount }}
+                </div>
+            </div>
+            <div class="row join-button align-items-end">
+                <div class="col-sm">
+                    <a class="btn btn-primary" href="/geogroup/show/{{ group.id }}" role="button">Join</a>
+                </div>
+            </div>
+        </div>
+    {% endfor %}
+    </div>
+
+{% endblock %}

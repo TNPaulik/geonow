@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Geooption{% endblock %}
+
+{% block body %}
+    <h1>Edit Geooption</h1>
+
+    {{ include('geooption/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('geooption_index') }}">back to list</a>
+
+    {{ include('geooption/_delete_form.html.twig') }}
+{% endblock %}

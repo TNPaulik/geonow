@@ -1,0 +1,156 @@
+#liip_imagine:
+#    # valid drivers options include "gd" or "gmagick" or "imagick"
+#    driver: "gd"
+#
+#    # define your filter sets under this option
+#    filter_sets:
+#
+#        # an example thumbnail transformation definition
+#        # https://symfony.com/doc/current/bundles/LiipImagineBundle/basic-usage.html#create-thumbnails
+#        squared_thumbnail:
+#
+#            # set your image quality defaults
+#            jpeg_quality:          85
+#            png_compression_level: 8
+#
+#            # setup the filter steps to apply for this transformation
+#            filters:
+#
+#                # auto rotate the image using EXIF metadata
+#                auto_rotate: ~
+#
+#                # strip the image of all metadata
+#                strip: ~
+#
+#                # scale and square the image to the given dimensions
+#                thumbnail:
+#                    size:          [253, 253]
+#                    mode:          outbound
+#                    allow_upscale: true
+#
+#                # create border by placing image on larger black background
+#                background:
+#                    size:     [256, 256]
+#                    position: center
+#                    color:    '#fff'
+liip_imagine :
+  resolvers :
+    default :
+      web_path : ~
+
+  default_image: null
+
+  filter_sets :
+    cache : ~
+
+    # the name of the "filter set"
+    my_thumb :
+
+      # adjust the image quality to 75%
+      quality : 90
+
+      # list of transformations to apply (the "filters")
+      filters :
+
+        # create a thumbnail: set size to 120x90 and use the "outbound" mode
+        # to crop the image when the size ratio of the input differs
+        thumbnail  : { size : [120, 90], mode : outbound }
+
+        # create a 2px black border: center the thumbnail on a black background
+        # 4px larger to create a 2px border around the final image
+        background : { size : [124, 94], position : center, color : '#000000' }
+
+    makesmall:
+      quality: 75
+      filters:
+        scale:
+          dim: [ 300, 300 ]
+        auto_rotate: ~
+
+    makegroupsmall:
+      quality: 75
+      filters:
+        scale:
+          dim: [ 50, 50 ]
+        auto_rotate: ~
+
+    makegroupsmall150bg2:
+      quality: 75
+      filters:
+        scale:
+          dim: [ 150, 150 ]
+        auto_rotate: ~
+        background: { size: [155, 155], position: center, color: '#000000' }
+
+    ico25:
+      quality: 100
+      filters:
+        scale:
+          dim: [ 25, 25 ]
+        auto_rotate: ~
+    ico30:
+      quality: 100
+      filters:
+        scale:
+          dim: [ 30, 30 ]
+        auto_rotate: ~
+    ico57:
+      quality: 100
+      filters:
+        scale:
+          dim: [ 57, 57 ]
+        auto_rotate: ~
+    ico72:
+      quality: 100
+      filters:
+        scale:
+          dim: [ 72, 72 ]
+        auto_rotate: ~
+    ico76:
+      quality: 100
+      filters:
+        scale:
+          dim: [ 76, 76 ]
+        auto_rotate: ~
+    ico114:
+      quality: 100
+      filters:
+        scale:
+          dim: [ 114, 114 ]
+        auto_rotate: ~
+    ico120:
+      quality: 100
+      filters:
+        scale:
+          dim: [ 120, 120 ]
+        auto_rotate: ~
+    ico144:
+      quality: 100
+      filters:
+        scale:
+          dim: [ 144, 144 ]
+        auto_rotate: ~
+    ico152:
+      quality: 100
+      filters:
+        scale:
+          dim: [ 152, 152 ]
+        auto_rotate: ~
+    ico180:
+      quality: 100
+      filters:
+        scale:
+          dim: [ 180, 180 ]
+        auto_rotate: ~
+    ico192:
+      quality: 100
+      filters:
+        scale:
+          dim: [ 192, 192 ]
+        auto_rotate: ~
+    ico196:
+      quality: 100
+      filters:
+        scale:
+          dim: [ 196, 196 ]
+        auto_rotate: ~
