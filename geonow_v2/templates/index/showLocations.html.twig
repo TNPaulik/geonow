@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GeoNow{% endblock %}
+
+{% block body %}
+    <form action="/location/resolve" method="post" class="form" id="myForm" enctype="multipart/form-data">
+        <div>
+            <div class="hidden">
+                Ltd: <input id="ltd" name="ltd"/>
+            </div>
+            <div class="hidden">
+                Lgd: <input id="lgd" name="lgt"/>
+            </div>
+
+            {% for i, location in locations %}
+                <div class="inputGroup {{ location.id }}" style="background-color: red">
+                    <input id="{{ location.id }}" name="{{ location.id }}" type="checkbox"/>
+                    <label for="{{ location.id }}">
+                        {{ location.distance }} m <img src="{{ location.getImgUrl() | imagine_filter('makesmall') }}" class="uploadedimage">
+                    </label>
+                </div>
+            {% endfor %}
+            <input type="file" accept="image/*" capture="camera" name="image">
+            <div>
+                <br>
+            </div>
+            <div style="text-align: center">
+                <a class="button submitbutton" data-function="getLocation" data-text="{% trans %}submtting data{% endtrans %}">
+                    <span>{% trans %}Resolve Location{% endtrans %}</span>
+                </a>
+            </div>
+        </div>
+    </form>
+{% endblock %}
