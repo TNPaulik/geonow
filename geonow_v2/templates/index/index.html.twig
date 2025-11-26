@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GeoNow{% endblock %}
+
+{% block body %}
+
+    <!-- <h1>{% trans %}Symfony is great{% endtrans %}</h1> -->
+
+    <form action="/location/submit" method="post" class="form" id="myForm" enctype="multipart/form-data">
+        <div>
+            <div class="hidden">
+                Ltd: <input id="ltd" name="ltd"/>
+            </div>
+            <div class="hidden">
+                Lgt: <input id="lgd" name="lgt"/>
+            </div>
+            <div class="hidden">
+                <input type="button" onclick="getLocation()" value="gps"/>
+            </div>
+            {% for i, option in options %}
+                <div class="inputGroup {{ option.id }}" style="background-color: {{ option.color }}">
+                    <input id="{{ option.id }}" name="{{ option.id }}" type="checkbox"/>
+                    <label for="{{ option.id }}">{{ option.name }}: {{ option.text }}</label>
+                </div>
+            {% endfor %}
+            <input type="file" accept="image/*" capture="camera" name="image">
+            <div>
+                <br>
+            </div>
+            <div style="text-align: center">
+                <a class="button submitbutton" data-function="getLocation" data-text="{% trans %}sending Report...{% endtrans %}">
+                    <span>{% trans %}Send Report{% endtrans %}</span>
+                </a>
+            </div>
+        </div>
+    </form>
+{% endblock %}

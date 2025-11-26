@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GeoNow{% endblock %}
+
+{% block body %}
+    <h1>Info:</h1>
+
+
+    <div>
+        App zur koordinierten Geo Lokalisierung
+
+        <h2 style="color: #5e9ca0;">jetzt auch mit coolem logo!!!!</h2>
+
+        <!--<h1 style="color: #5e9ca0;"><img src="/img/logos/logo_196px.png"/></h1>-->
+
+        <input type="text" class="colors" id="color1" name="color1" style="display: none">
+        <!--<input type="color" class="colors" id="color2" name="color2" value="#e66465">
+        <input type="color" class="colors" id="color3" name="color3" value="#e66465">
+        <input type="color" class="colors" id="color4" name="color4" value="#e66465">-->
+
+        {{ source('logo.svg') }}
+
+
+    </div>
+
+{% endblock %}
