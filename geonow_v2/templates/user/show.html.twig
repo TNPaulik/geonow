@@ -1,0 +1,38 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}user{% endblock %}
+
+{% block body %}
+    <h1>user</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ usertoshow.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ usertoshow.name }}</td>
+            </tr>
+            <tr>
+                <th>Password</th>
+                <td>{{ usertoshow.password }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ usertoshow.email }}</td>
+            </tr>
+            <tr>
+                <th>Hash</th>
+                <td>{{ usertoshow.hash }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('user_index') }}">back to list</a>
+
+    <a href="{{ path('user_edit', {'id': usertoshow.id}) }}">edit</a>
+
+    {{ include('user/_delete_form.html.twig') }}
+{% endblock %}

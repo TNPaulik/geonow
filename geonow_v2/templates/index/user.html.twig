@@ -1,0 +1,90 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GeoNow - User{% endblock %}
+
+{% block body %}
+    <h1>{% trans %}User Area{% endtrans %}</h1>
+
+    <br><br>
+
+    <h2>{% trans %}Points:{% endtrans %} {{ user.points }}</h2>
+
+    <br><br>
+
+    <h2>{% trans %}Login with other user:{% endtrans %}</h2>
+    <form action="/user/login" method="post">
+        <div class="row">
+            <div class="col-2">
+                Name:
+            </div>
+            <div class="col-3">
+                <input name="name"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                Password:
+            </div>
+            <div class="col-3">
+                <input name="password" type="password"/>
+            </div>
+        </div>
+        <input type="submit" value="{% trans %}Sign in{% endtrans %}">
+    </form>
+
+    <br><br>
+
+    <h2>{% trans %}Change User Details:{% endtrans %}</h2>
+    <form action="/user/update" method="post">
+        <div class="row">
+            <div class="col-2">
+                Name:
+            </div>
+            <div class="col-3">
+                <input name="name" value="{{ user.name }}"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                Password:
+            </div>
+            <div class="col-3">
+                <input name="password" type="password"/>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-2">
+                Email:
+            </div>
+            <div class="col-3">
+                <input name="email" value="{{ user.email }}"/>
+            </div>
+        </div>
+        <input type="submit" value="{% trans %}Update{% endtrans %}">
+    </form>
+
+    <br><br>
+
+    <h2>{% trans %}Your joined groups:{% endtrans %}</h2>
+    {% if user.joinedGroups is not empty %}
+        {% for i, group in user.joinedGroups %}
+            <div><a href="{{ group.getUrl() }}">{{ group.name }}</a></div>
+        {% endfor %}
+    {% else %}
+        {% trans %}You have not reported any locations yet{% endtrans %}
+    {% endif %}
+
+    <br><br>
+
+    <h2>{% trans %}Your reported locations:{% endtrans %}</h2>
+    {% if locations is not empty %}
+        {% for i, location in locations %}
+            <div class="inputGroup {{ location.id }}" style="background-color: red">
+                <input id="{{ location.id }}" name="{{ location.id }}" type="checkbox"/>
+                <label for="{{ location.id }}"> <img src="{{ location.getImgUrl() | imagine_filter('makesmall') }}" class="uploadedimage"></label>
+            </div>
+        {% endfor %}
+    {% else %}
+        {% trans %}You have not reported any locations yet{% endtrans %}
+    {% endif %}
+{% endblock %}

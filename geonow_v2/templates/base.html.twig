@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>{% block title %}Test Application{% endblock %}</title>
+
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <link rel="manifest" href="manifest.json" />
+    <meta name="viewport" content="width=device-width" />
+
+    {% block stylesheets %}
+        {{ importmap('app') }}
+    {% endblock %}
+
+</head>
+<body>
+<div>
+    <!-- the left sidebar -->
+    {% block sidebar %}
+
+        <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-primary">
+            <a class="navbar-brand" href="/">
+                <img src="{{ asset('img/logos/logo_196px.png') | imagine_filter('ico25') }}" alt="GeoNow" title="GeoNow">
+            </a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav mr-auto">
+                    <li class="nav-item {{ app.request.get('_route') == 'base' ? 'active' }}">
+                        <a class="nav-link" href="/"><span>{% trans %}Home{% endtrans %}</span></a>
+                    </li>
+                    <li class="nav-item {{ app.request.get('_route') == 'app_geogroup_geogroups' ? 'active' }}">
+                        <a class="nav-link" href="/geogroup/s"><span>{% trans %}Geogroups{% endtrans %}</span></a>
+                    </li>
+                    <li class="nav-item {{ app.request.get('_route') == 'removewaste' ? 'active' }}">
+                        <a class="nav-link" href="/removewaste"><span>{% trans %}Resolve{% endtrans %}</span></a>
+                    </li>
+                    <li class="nav-item {{ app.request.get('_route') == 'user_index' ? 'active' }}">
+                        <a class="nav-link" href="/user"><span>{% trans %}User{% endtrans %}</span></a>
+                    </li>
+                    <li class="nav-item {{ app.request.get('_route') == 'app_index_join' ? 'active' }}">
+                        <a class="nav-link" href="/join"><span>{% trans %}Join{% endtrans %}</span></a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            {% trans %}More{% endtrans %}
+                        </a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/info"><span>{% trans %}Info{% endtrans %}</span></a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item" href="/impressum"><span>{% trans %}Impressum{% endtrans %}</span></a>
+                        </div>
+                    </li>
+                </ul>
+                <div class="flag-div">
+                    <a href="/setlocale/en">
+                        <span class="flag-icon flag-icon-gb"></span>
+                    </a>
+                    <a href="/setlocale/de">
+                        <span class="flag-icon flag-icon-de"></span>
+                    </a>
+                </div>
+                <form class="form-inline my-2 my-lg-0" method="post" action="/geogroup/s">
+                    <input name="search" class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+                </form>
+            </div>
+        </nav>
+
+    {% endblock %}
+    <!-- the main page content -->
+    <div id="content">
+        <section>
+
+            {% for label, messages in app.flashes %}
+                {% for message in messages %}
+                    <div class="flash-{{ label }}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endfor %}
+            <br>
+            <div id="" class="container">
+
+                <div class="usergreet">{% trans %}Hallo{% endtrans %}
+                    {% if user.name|length %}
+                        {{ user.name }}
+                    {% else %}
+                        User
+                    {% endif %}
+                </div>
+                <div>{% trans %}Aktive Geogruppe{% endtrans %}: {{ user.getActiveGroup().name }}</div>
+                {% if not user.name|length %}
+                    <div><a href="/user">{% trans %}Edit User{% endtrans %}</a></div>
+                {% endif %}
+
+                <br>
+
+                {% block body %}{% endblock %}
+            </div>
+
+        </section>
+    </div>
+</div>
+
+{% block javascripts %}
+    <script>
+        var here_app_id = "{{ here_app_id }}";
+        var here_app_code = "{{ here_app_code }}";
+    </script>
+{% endblock %}
+
+</body>
+</html>
