@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Geooption{% endblock %}
+
+{% block body %}
+    <h1>Create new Geooption</h1>
+
+    {{ include('geooption/_form.html.twig') }}
+
+    <a href="{{ path('geooption_index') }}">back to list</a>
+{% endblock %}

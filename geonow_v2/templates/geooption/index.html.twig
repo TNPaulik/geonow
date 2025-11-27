@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Geooption index{% endblock %}
+
+{% block body %}
+    <h1>Geooption index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Text</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for geooption in geooptions %}
+            <tr>
+                <td>{{ geooption.id }}</td>
+                <td>{{ geooption.Name }}</td>
+                <td>{{ geooption.Text }}</td>
+                <td>
+                    <a href="{{ path('geooption_show', {'id': geooption.id}) }}">show</a>
+                    <a href="{{ path('geooption_edit', {'id': geooption.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('geooption_new') }}">Create new</a>
+{% endblock %}

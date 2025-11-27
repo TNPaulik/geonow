@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}GeoNow{% endblock %}
+
+{% block body %}
+
+        <div>
+            <div class="hidden">
+                Ltd: <input id="ltd" name="ltd"/>
+            </div>
+            <div class="hidden">
+                Lgd: <input id="lgd" name="lgt"/>
+            </div>
+
+            <div style="text-align: center">
+                <a onClick="getAviableLocationsClick()" class="button" data-function="getAviableLocationsClick">
+                    <span>{% trans %}Show avialible locations{% endtrans %}</span>
+                </a>
+            </div>
+        </div>
+
+{% endblock %}
